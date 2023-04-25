@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 1，自动扫描包，让指定包下的注解生效,由IOC容器统一管理 -->
+    <context:component-scan base-package="fit.yujing.controller"/>
+    <!-- 2，支持mvc注解驱动, 消息转换器 -->
+    <!-- 默认使用: org.springframework.http.converter.StringHttpMessageConverter -->
+    <!-- Fastjson 和 Spring 进行集成: https://cloud.tencent.com/developer/article/2005553 -->
+    <!-- https://blog.csdn.net/weixin_46453221/article/details/119733045 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson2.support.spring.http.converter.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <bean id="fastJsonConfig" class="com.alibaba.fastjson2.support.config.FastJsonConfig">
+        <!--   自定义配置...   -->
+        <!-- <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/> -->
+    </bean>
+    <!-- 3，让Spring MVC不处理静态资源, 使用默认的servlet处理静态资源 -->
+    <mvc:default-servlet-handler/>
+    <!-- 4. 拦截器: https://blog.csdn.net/qq_27442469/article/details/98397339 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="fit.yujing.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- <mvc:resources mapping="/dist/**" location="/dist/"/> -->
+</beans>

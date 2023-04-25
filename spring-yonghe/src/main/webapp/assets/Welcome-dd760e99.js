@@ -1,0 +1,1 @@
+import{_ as s,o as c,c as o,p as t,a as _,b as a}from"./index-6fb96e19.js";const d={},n=e=>(t("data-v-17011da5"),e=e(),_(),e),p={class:"wrapper"},r=n(()=>a("h3",{class:"text-linear"},"欢迎使用永和大王门店管理系统",-1)),l=[r];function i(e,h){return c(),o("div",p,l)}const m=s(d,[["render",i],["__scopeId","data-v-17011da5"]]);export{m as default};

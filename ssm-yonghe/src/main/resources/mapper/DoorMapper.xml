@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fit.yujing.dao.DoorMapper">
+    <resultMap id="DoorMap" type="fit.yujing.pojo.Door">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="tel" column="tel" />
+        <result property="addr" column="addr" />
+    </resultMap>
+
+    <insert id="addDoor" parameterType="fit.yujing.pojo.Door">
+        insert into tb_door(name, tel, addr)
+        VALUES (#{name}, #{tel}, #{addr})
+    </insert>
+    <update id="updateDoor" parameterType="fit.yujing.pojo.Door">
+        update tb_door
+        set name = #{name},
+            tel=#{tel},
+            addr=#{addr}
+        where id = #{id}
+    </update>
+
+    <delete id="removeDoor" parameterType="integer">
+        delete from tb_door where id = #{id}
+    </delete>
+
+    <select id="listDoors" resultMap="DoorMap">
+        select * from tb_door
+    </select>
+    <select id="getDoorById" resultMap="DoorMap">
+        select * from tb_door where id = #{id}
+    </select>
+</mapper>

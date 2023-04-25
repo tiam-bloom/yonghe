@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "noEmit": true,
+    // 指定全局组件类型。
+    "types": ["element-plus/global"],
+    // "paths": {
+    //   "/@/*": ["src/*"]
+    // },
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    // https://blog.csdn.net/m0_47670683/article/details/124025972
+    "suppressImplicitAnyIndexErrors": true,
+    "ignoreDeprecations": "5.0"
+    
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/assets/js/eventBus.js"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

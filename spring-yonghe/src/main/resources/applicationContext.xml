@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- druid连接池, 数据库相关信息 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- mybatis-plus MybatisSqlSessionFactoryBean, 否则无法使用baseMapper中的方法 -->
+    <!-- 不要使用原生的 org.mybatis.spring.SqlSessionFactoryBean -->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- mapper位置 -->
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+        <!-- 指定配置文件位置 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- Mybatis Plus 分页插件 PaginationInnerInterceptor -->
+        <property name="plugins">
+            <array>
+                <bean class="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+                    <property name="interceptors">
+                        <list>
+                            <bean class="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor" />
+                        </list>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
+    </bean>
+    <!-- 扫描dao层包 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="fit.yujing.dao"/>
+    </bean>
+    <!-- 扫描service层 -->
+    <context:component-scan base-package="fit.yujing.service"/>
+    <!-- 扫描配置层 -->
+    <context:component-scan base-package="fit.yujing.config"/>
+</beans>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fit.yujing.dao.OrderMapper">
+    <resultMap id="OrderMap" type="fit.yujing.pojo.Order">
+        <id property="id" column="id"/>
+        <result property="doorId" column="door_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="orderType" column="order_type"/>
+        <result property="pnum" column="pnum"/>
+        <result property="cashier" column="cashier"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="payType" column="pay_type"/>
+        <result property="price" column="price"/>
+        <association property="door" javaType="fit.yujing.pojo.Door">
+            <id property="id" column="did"/>
+            <result property="name" column="name"/>
+            <result property="tel" column="tel"/>
+            <result property="addr" column="addr"/>
+        </association>
+    </resultMap>
+
+    <insert id="addOrder" parameterType="fit.yujing.pojo.Order">
+        insert into tb_order(door_id, order_no, order_type, pnum, cashier, pay_type, price)
+        values (#{doorId}, #{orderNo}, #{orderType}, #{pnum}, #{cashier}, #{payType}, #{price})
+    </insert>
+    <update id="updateOrder" parameterType="fit.yujing.pojo.Order">
+        update tb_order
+        set door_id    = #{doorId},
+            order_no   = #{orderNo},
+            order_type = #{orderType},
+            pnum       = #{pnum},
+            cashier    = #{cashier},
+            pay_type   = #{payType},
+            price      = #{price}
+        where id = #{id}
+    </update>
+    <delete id="deleteOrderById">
+        delete
+        from tb_order
+        where id = #{id}
+    </delete>
+    <select id="listOrders" resultMap="OrderMap">
+        select o.id,
+               door_id,
+               order_no,
+               order_type,
+               pnum,
+               cashier,
+               order_time,
+               pay_time,
+               pay_type,
+               price,
+               d.id as did,
+               name
+        from tb_order o
+                 left join tb_door d on o.door_id = d.id
+    </select>
+    <select id="getOrderById" resultMap="OrderMap">
+        select *
+        from tb_order o left join tb_door d on o.door_id = d.id
+        where o.id = #{id}
+    </select>
+</mapper>
